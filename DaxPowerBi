@@ -1,0 +1,54 @@
+--- PARETO MEDALLAS POR PAIS ---
+
+Acumulado_Medalla% = 
+VAR MedallasTot = [Total_Medalla_Pais]
+VAR TotalMedalla = CALCULATE([Total_Medalla_Pais],ALL(Datos_Medallas_General))
+VAR Acumulado_MedallaPais =
+SUMX(
+    FILTER(
+        SUMMARIZE(ALLSELECTED(Datos_Medallas_General),Datos_Medallas_General[cod_pais],
+        "_Medallas", [Total_Medalla_Pais]),
+        [_Medallas]>= MedallasTot
+    ),
+    [_Medallas])
+RETURN
+DIVIDE(Acumulado_MedallaPais,TotalMedalla,0)
+
+
+--- PARETO MEDALLAS POR DEPORTE ---
+
+Acumulado_MedallaDeporte% = 
+VAR MedallasTot = [Total_Medalla_Pais]
+VAR TotalMedalla = CALCULATE([Total_Medalla_Pais],ALL(Datos_Medallas_General))
+VAR Acumulado_MedallaDeporte =
+SUMX(
+    FILTER(
+        SUMMARIZE(ALLSELECTED(Datos_Medallas_General),Datos_Medallas_General[deporte],
+        "_Medallas", [Total_Medalla_Pais]),
+        [_Medallas]>= MedallasTot
+    ),
+    [_Medallas])
+RETURN
+DIVIDE(Acumulado_MedallaDeporte,TotalMedalla,0)
+
+--- RANKING PAIS ---
+
+Ranking_pais = 
+RANKX(
+    ALL(Maestro_Pais[nombre_pais]), 
+    VAR Oro = [Total_Medallas_Oro]
+    VAR Plata = [Total_Medallas_Plata]
+    VAR Bronce = [Total_Medallas_Bronce]
+    RETURN Oro * 10000 + Plata * 100 + Bronce,
+    ,
+    DESC,
+    Dense
+)
+
+--- INDICE EXITO PAIS ---
+Indice_Exito =
+IF (
+    [Total_Medalla_Pais] > [Cuenta_Modalidades],
+    1,
+    DIVIDE ( [Total_Medalla_Pais], [Cuenta_Modalidades], 0 )
+)
