@@ -27,7 +27,7 @@ enabling strategic decision-making for future sports investments, inclusion poli
 
 - Medal map by country showing the distribution of gold, silver, and bronze medals.
 - Ranking of the top 10 medal-winning countries, showing the accumulation of medals by type (gold, silver, bronze).
-- Ranking of the top 10 sports with the most medals, showing the distribution and cumulative percentage.
+- Ranking of sports with the most medals, showing the distribution and cumulative percentage.
 
 **3. Athlete Demographics**
 
